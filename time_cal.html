@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>방송시간계산기</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    /* #region font-face */
+        @font-face {
+        font-family: 'Pretendard';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+        font-weight: 100;
+        font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+            font-weight: 200;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+            font-weight: 800;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+            font-weight: 900;
+            font-display: swap;
+        }
+    /* #endregion */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard';
+            font-weight: 700;
+            color: #333;
+            text-decoration: none;
+            list-style-type: none;
+          
+        }
+          #header {
+            height: 50px;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calc-card { 
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: #f4f7f6; 
+            padding: 25px; 
+            border-radius: 12px; 
+        }
+        
+        .title {
+            margin-top: 0; 
+            text-align: center;
+            font-size: 20px;
+
+        }
+
+        .input-group { 
+            width: 50%;
+            margin: 20px auto;
+            
+        
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-size: 0.9em;
+        }
+        input[type="time"] { 
+            font-size: 0.9em;
+            padding: 12px; 
+            border: 2px solid #ddd; 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+        
+        }
+
+        input[type="time"]:focus {
+            outline: none;
+        }
+
+
+
+       /* 우측 시계 아이콘 */
+        input[type="time"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        padding: 5px;
+        }       
+
+        .result-area { 
+            margin-top: 25px; 
+            padding: 20px; 
+            background: #e9ecef; 
+            border-radius: 8px; 
+            text-align: center; 
+        }
+        #diffResult { 
+            font-size: 2.5em; 
+            font-weight: bold; 
+            color: #78B1F1; 
+            display: block; 
+            margin-top: 10px;
+        }
+     
+    </style>
+</head>
+<body>
+    <div id="header">
+        <a href="../index.html"><p>홈으로 가기</p></a>
+    </div>
+    <div class="calc-card">
+        <h2 class="title">방송 시간 계산기</h2>
+        
+        <div class="input-group">
+            <label>방송 시작 시각</label>
+            <input type="time" id="startTime" value="00:00">
+        </div>
+
+        <div class="input-group">
+            <label>게시 시각</label>
+            <input type="time" id="eventTime" value="00:00">
+        </div>
+
+        <div class="result-area">
+            <strong>경과 시간(영상 내 시간)</strong>
+            <span id="diffResult">00:00</span>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+        // 값이 바뀔 때마다 자동 계산
+        $('#startTime, #eventTime').on('input', function() {
+            calculateDiff();
+        });
+
+        function calculateDiff() {
+            const startVal = $('#startTime').val();
+            const eventVal = $('#eventTime').val();
+
+            if (!startVal || !eventVal) return;
+
+            // 임의의 같은 날짜로 Date 객체 생성 (비교용)
+            const dummyDate = "2026-01-01 ";
+            const startDate = new Date(dummyDate + startVal);
+            let eventDate = new Date(dummyDate + eventVal);
+
+            // 만약 기록 시각이 시작 시각보다 빠르면 (자정 넘어간 경우 처리)
+            if (eventDate < startDate) {
+                eventDate.setDate(eventDate.getDate() + 1);
+            }
+
+            // 차이 계산 (밀리초 -> 초)
+            let diffSec = Math.floor((eventDate - startDate) / 1000);
+
+            // HH:MM:SS 포맷팅
+            const finalTime = formatTime(diffSec);
+            $('#diffResult').text(finalTime);
+        }
+
+        function formatTime(totalSeconds) {
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+        
+
+            return [h, m]
+                .map(v => v.toString().padStart(2, '0'))
+                .join(':');
+        }
+
+        // 초기 실행
+        calculateDiff();
+    });
+</script>
+</body>
+
+
+</html>
+
+

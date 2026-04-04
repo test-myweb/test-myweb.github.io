@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myhome</title>
+    <style>
+         /* #region font-face */
+         @font-face {
+        font-family: 'Pretendard';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+        font-weight: 100;
+        font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+            font-weight: 200;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+            font-weight: 800;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+            font-weight: 900;
+            font-display: swap;
+        }
+    /* #endregion */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard';
+            font-weight: 500;
+            font-size: 20px;
+            text-decoration: none;
+            list-style-type: none;
+            color: #333;
+        }
+        #wrap {
+            width: 100%;
+            height: 100vh;
+            background-color: #d9d9d9;
+        
+        }
+        #header {
+            height: 50px;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+    
+        }
+
+        #memo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc((100vh - 50px) / 3);
+            background-image: url(https://images.pexels.com/photos/5082563/pexels-photo-5082563.jpeg);
+            background-size: cover;
+            background-position: center;
+        }
+         #when {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc((100vh - 50px) / 3);
+            background-image: url(https://images.pexels.com/photos/34622365/pexels-photo-34622365.jpeg);
+            background-size: cover;
+            background-position: center;
+        }   
+         #tba {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc((100vh - 50px) / 3);
+            background-color: rgb(107, 107, 107);
+        }
+        
+        #main p {
+            color: white;
+            margin: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header">
+            <a href="../index.html"><p>홈으로 가기</p></a>
+        </div>
+        <div id="main">
+             <div id="memo">
+                 <a href="live_memo.html"><p>생방송 모니터링 메모장</p></a>
+            </div>
+            <div id="when">
+                <a href="time_cal.html"><p>방송시간 계산기</p></a>
+            </div>
+            <div id="tba">
+                <a href="#"><p>tba</p></a>
+            </div>
+        </div>
+       
+    </div>
+</body>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    $(document).ready(function() {
+    // #main의 자식 div들에 마우스를 올렸을 때
+    $('#main > div').on('mouseenter', function() {
+        $(this).css({
+            'filter': 'brightness(0.8)', 
+            'transition': 'all 0.3s'     
+        });
+    });
+
+    // 마우스가 나갔을 때 원래 밝기로
+    $('#main > div').on('mouseleave', function() {
+        $(this).css({
+            'filter': 'brightness(1)',   /* 원래 밝기 */
+            'transition': 'all 0.3s'
+        });
+    });
+});
+   
+</script>
+</html>
